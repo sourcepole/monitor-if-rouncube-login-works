@@ -1,46 +1,41 @@
-Roundcube-AutoLogin
-===================
+roundcube-login-check
+=====================
 
-This class allows you to automatically login to RoundCube
+This allows you to monitor whether login to RoundCube works
 
-# Important
+# Dependencies
 
-For this class to work, the RoundCube installation has to be on the same domain the code is run. Because you can not set cookies on another domain. It also needs cURL to function correctly.
+* php
+* php-cli
+* php-curl
 
 # Usage
 
-Usage is very simple, you only need RoundcubeAutoLogin.php, cookiejar.txt is created and deleted on the fly.
-(you can rename it, but you have to rename it in the code as well). 
+    # LC_ALL=C ls -l /usr/local/lib/Roundcube-Login-Check/
+    total 12
+    -rw-r--r-- 1 root root 3940 Nov 26 18:05 RoundcubeAutoLogin.php
+    -rwxr-xr-x 1 root root  438 Nov 26 18:11 check_roundcube.sh
+    -rw-r--r-- 1 root root  436 Nov 26 18:00 try_to_log_in_to_roundcube.php
 
-1. Using from a php script:
-Just include the class and the following code in your php script:
+    # ls -l /etc/RoundcubeAutoLoginConfig.php 
+    -rw------- 1 nagios root 113 Nov 26 17:59 /etc/RoundcubeAutoLoginConfig.php
 
-```
-    // set your roundcube domain path
-    $rc = new RoundcubeAutoLogin('http://domain.com/roundcube/');
-    $cookies = $rc->login('email', 'password');
-    // now you can set the cookies with setcookie php function, or using any     other function of a framework you are using
-    foreach($cookies as $cookie_name => $cookie_value)
-    {
-        setcookie($cookie_name, $cookie_value, 0, '/', '');
+RoundcubeAutoLoginConfig.php should be only readable for the `nagios` user!
+
+    # cat /etc/icinga2/zones/roundcube/services.conf
+    
+    object CheckCommand "check_roundcube" {
+      command = [ "/usr/local/lib/Roundcube-Login-Check/check_roundcube.sh" ]
+      arguments = {   }
     }
-    // and redirect to roundcube with the set cookies
-    $rc->redirect();
-```
-
-2. Using script as is:
-Just place the RoundcubeAutoLogin.php on your webserver, e.g. in the roundcube directory,
-include this form in you HMTL code and let it point to where you placed the script.
-
-```
-    <form action="http://domain.com/roundcube/RoundcubeAutoLogin.php" method="post" name="autologin">
-        UserID <input name="rc_user" type="text" id="rc_user">
-        Passwort <input name="rc_pass" type="password" id="rc_pass">
-        <input type="submit" name="Submit" value="login">
-    </form>
-```
-In both cases you should be automatically redirected to your Roundcube installation and you should be logged in.
-
-# Contributing
-
-This class is brand new, so if you have any improvements please submit a pull request. For instance debugging should become easier etcetera.
+    
+    object Service "http-roundcube-login" {
+      import "generic-service"
+    
+      check_command = "check_roundcube"
+    
+      check_interval = 1d
+      vars.notification_interval = 1d
+    
+      host_name = "roundcube"
+    }
