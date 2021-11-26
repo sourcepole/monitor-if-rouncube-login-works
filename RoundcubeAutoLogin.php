@@ -1,5 +1,7 @@
 <?php
 
+// From https://github.com/alexjeen/Roundcube-AutoLogin
+
 /**
  * Class to automatically login on a Roundcube installation
  * @compatibility RoundCube 1.0.2+
@@ -128,37 +130,6 @@ class RoundcubeAutoLogin
             return FALSE;
         }
     }
-}
-
-/*
- include this HTML form in you page and point it to your script location
-
-<form action="http://domain.com/roundcube/RoundcubeAutoLogin.php" method="post" name="autologin">
-  UserID <input name="rc_user" type="text" id="rc_user">
-  Passwort <input name="rc_pass" type="password" id="rc_pass">
-  <input type="submit" name="Submit" value="login">
-</form>
-
-*/
-
-// send parameters with post, its more secure because username and password not shown in browser and logfile
-$rcuser=$_REQUEST['rc_user'];
-$rcpass=$_REQUEST['rc_pass'];
-
-
-// set your roundcube domain path
-$rc = new RoundcubeAutoLogin('http://domain.com/roundcube/');
-$cookies = $rc->login($rcuser, $rcpass);
-
-// now you can set the cookies with setcookie php function, or using any other function of a framework you are using
-if (!empty($cookies))
-{
-    foreach($cookies as $cookie_name => $cookie_value)
-    {
-        setcookie($cookie_name, $cookie_value, 0, '/', '');
-    }
-    // and redirect to roundcube with the set cookies
-    $rc->redirect();
 }
 
 ?>
