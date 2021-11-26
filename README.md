@@ -22,7 +22,7 @@ This allows you to monitor whether login to RoundCube works
 
 RoundcubeAutoLoginConfig.php should be only readable for the `nagios` user!
 
-    # cat /etc/icinga2/zones/roundcube/services.conf
+    # cat /etc/icinga2/zones.d/roundcube/services.conf
     
     object CheckCommand "check_roundcube" {
       command = [ "/usr/local/lib/Roundcube-Login-Check/check_roundcube.sh" ]
