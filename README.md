@@ -9,7 +9,7 @@ This allows you to monitor whether login to RoundCube works
 * php-cli
 * php-curl
 
-# Usage
+# Installation
 
     # LC_ALL=C ls -l /usr/local/lib/Roundcube-Login-Check/
     total 12
@@ -19,6 +19,13 @@ This allows you to monitor whether login to RoundCube works
 
     # ls -l /etc/RoundcubeAutoLoginConfig.php 
     -rw------- 1 nagios root 113 Nov 26 17:59 /etc/RoundcubeAutoLoginConfig.php
+
+# Deployment via ansible
+
+Look in the [./ansible](./ansible) directory for an ansible role to deploy
+the files.
+
+# Icinga config
 
 RoundcubeAutoLoginConfig.php should be only readable for the `nagios` user!
 
@@ -40,5 +47,3 @@ RoundcubeAutoLoginConfig.php should be only readable for the `nagios` user!
       host_name = "roundcube"
     }
 
-Look in the [./ansible](./ansible) directory for an ansible role to deploy
-the files.
