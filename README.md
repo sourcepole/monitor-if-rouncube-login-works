@@ -39,3 +39,6 @@ RoundcubeAutoLoginConfig.php should be only readable for the `nagios` user!
     
       host_name = "roundcube"
     }
+
+Look in the [./ansible](./ansible) directory for an ansible role to deploy
+the files.

@@ -1,0 +1,16 @@
+- name: copy scripts to /usr/local/lib/Roundcube-Login-Check
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/lib/Roundcube-Login-Check/
+  with_items:
+    - check_roundcube.sh
+    - RoundcubeAutoLogin.php
+    - try_to_log_in_to_roundcube.php 
+
+- name: copy RoundcubeAutoLoginConfig.php to /etc
+  template:
+    src: RoundcubeAutoLoginConfig.php.j2
+    dest: /etc/RoundcubeAutoLoginConfig.php
+    owner: nagios
+    mode: go-rwx
+
