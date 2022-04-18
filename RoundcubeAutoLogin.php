@@ -72,7 +72,8 @@ class RoundcubeAutoLogin
             if($response_info['http_code'] == 302)
             {
                 // find all relevant cookies to set (php session + rc auth cookie)
-                preg_match_all('/Set-Cookie: (.*)\b/', $response, $cookies);
+                // newer RoundCubes use set-cookie, older use Set-Cookie
+                preg_match_all('/Set-Cookie: (.*)\b/i', $response, $cookies);
 
                 $cookie_return = array();
 
